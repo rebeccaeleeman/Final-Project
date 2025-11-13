@@ -5,14 +5,14 @@ editor: visual
 ---
 
 ```{r}
-1 + 1
+library(tidyverse)
+bloodpressure <- read_csv("data/BloodStorage.csv")
+
 ```
 
-You can add options to executable code like this
 
 ```{r}
 #| echo: false
 2 * 2
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
