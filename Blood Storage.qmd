@@ -23,3 +23,14 @@ summary(anova_result)
 #| echo: false
 2 * 2
 ```
+
+
+
+Assumptions 
+1) The samples are independent. 
+
+This assumption is reasonably met by the nature of the data. Each sample represents and independent individual patient. Any condtions for one patient would not impact the conditions of another patient. 
+
+2) The variance is the same within all groups
+3) Outcomes within groups are normally distributed
+
