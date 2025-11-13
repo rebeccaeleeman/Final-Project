@@ -1,0 +1,25 @@
+---
+title: "Blood Storage"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+blood <- read.csv("BloodStorage.csv")
+
+names(blood)
+
+blood$`RBC.Age.Group` <- factor(blood$`RBC.Age.Group`,
+                                levels = c(1, 2, 3),
+                                labels = c("Younger", "Middle", "Older"))
+anova_result <- aov(TimeToRecurrence ~ RBC.Age.Group, data = blood)
+summary(anova_result)
+
+
+```
+
+```{r}
+#| echo: false
+2 * 2
+```
