@@ -32,5 +32,21 @@ Assumptions
 This assumption is reasonably met by the nature of the data. Each sample represents and independent individual patient. Any condtions for one patient would not impact the conditions of another patient. 
 
 2) The variance is the same within all groups
+```{r}
+library(ggplot2)
+ggplot(data = blood, aes(x = TimeToRecurrence)) +
+  geom_histogram(bins = 10) +
+  facet_grid(~ RBC.Age.Group)
+```
+This assumption is not met. Outcomes between groups of Blood Age (Younger, Middle, Older) are not normally distributed. Rather, they are right skewed in each group.  
+
 3) Outcomes within groups are normally distributed
 
+```{r, echo=FALSE}
+ggplot(blood, aes(x = RBC.Age.Group, y = TimeToRecurrence, fill = RBC.Age.Group)) +
+  geom_boxplot(alpha = 0.7) +
+  theme_minimal() +
+  labs(title = "Boxplot of TimeToRecurrence across RBC.Age.Group Categories",
+       x = "RBC.Age.Group", y = "TimeToRecurrence")
+```
+This assumption of anova is met. The variance across groups is nearly identical. 
