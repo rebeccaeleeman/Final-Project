@@ -1,0 +1,18 @@
+---
+title: "Blood pressure"
+format: pdf
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+bloodpressure <- read_csv("data/BloodStorage.csv")
+
+```
+
+
+```{r}
+#| echo: false
+2 * 2
+```
+
