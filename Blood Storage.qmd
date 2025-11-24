@@ -53,6 +53,13 @@ summary(anova_result)
 
 ```
 Linear regression 
+
+Conditions: 
+
+Independence: 
+
+
+Checking linearity and equal variance
 ```{r}
 lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group, data = blood)
 summary(lm_mod)
@@ -78,6 +85,10 @@ ggplot(lm_mod, aes(x = .fitted, y = .resid)) +
   theme_minimal()
 ```
 
+
+Checking normality of residuals 
+
+
 ```{r}
 ggplot(lm_mod, aes(.resid)) +
   geom_histogram(bins = 10, aes(y = ..density..)) +
@@ -86,14 +97,14 @@ ggplot(lm_mod, aes(.resid)) +
 ```
 Running the regression 
 ```{r}
-blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
-                              levels = c(1, 2, 3),
-                              labels = c("Younger", "Middle", "Older"))
-lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group, data = blood)
-summary(lm_mod)
+# Make sure you have clean data
+blood_clean <- blood %>% drop_na(TimeToRecurrence, RBC.Age.Group, Age)
 
-unique(blood$RBC.Age.Group)
-table(blood$RBC.Age.Group)
+
+lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group + Age, data = blood_clean)
+
+# View results
+summary(lm_mod)
 
 ```
 
