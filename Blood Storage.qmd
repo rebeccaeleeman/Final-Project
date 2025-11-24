@@ -56,22 +56,13 @@ Linear regression
 
 Conditions: 
 
-Independence: 
-
+Independence: The independence condition appears to be met, as each observation in the Blood Storage dataset represents a separate patient, and there’s no indication that the measurements influence one another. Therefore, the residuals can reasonably be assumed to be independent.
 
 Checking linearity and equal variance
 ```{r}
 lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group, data = blood)
 summary(lm_mod)
 
-?predict
-
-pred <- predict(lm_mod)
-res <- residuals(lm_mod)
-
-plot(pred, res)
-plot(pred)
-plot(res)
 
 
 ggplot(lm_mod, aes(x = .fitted, y = .resid)) +
@@ -84,7 +75,7 @@ ggplot(lm_mod, aes(x = .fitted, y = .resid)) +
   ) +
   theme_minimal()
 ```
-
+Interpretation: INSERT SMTH HERE
 
 Checking normality of residuals 
 
@@ -95,6 +86,9 @@ ggplot(lm_mod, aes(.resid)) +
   geom_density(color = "blue") +
   labs(title = "Histogram of Residuals")
 ```
+Interpretation: Normality is not met, as the plot is right skewed with most residuals clustered near 0 and a longer tail extending to the right. This suggests that the residuals are not normally distributed. 
+
+
 Running the regression 
 ```{r}
 # Make sure you have clean data
@@ -103,7 +97,6 @@ blood_clean <- blood %>% drop_na(TimeToRecurrence, RBC.Age.Group, Age)
 
 lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group + Age, data = blood_clean)
 
-# View results
 summary(lm_mod)
 
 ```
