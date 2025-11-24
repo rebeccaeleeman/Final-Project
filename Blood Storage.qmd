@@ -10,39 +10,90 @@ Assumptions
 
 This assumption is reasonably met by the nature of the data. Each sample represents and independent individual patient. Any condtions for one patient would not impact the conditions of another patient. 
 
-2) The variance is the same within all groups
+2) Outcomes within groups are normally distributed 
 ```{r}
+library(tidyverse)
+blood <- read.csv("BloodStorage.csv")
+
 library(ggplot2)
 ggplot(data = blood, aes(x = TimeToRecurrence)) +
   geom_histogram(bins = 10) +
   facet_grid(~ RBC.Age.Group)
+
+# Recode the numeric group variable into labeled factors
+blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
+                              levels = c(1, 2, 3),
+                              labels = c("Younger", "Middle", "Older"))
 ```
 This assumption is not met. Outcomes between groups of Blood Age (Younger, Middle, Older) are not normally distributed. Rather, they are right skewed in each group.  
 
-3) Outcomes within groups are normally distributed
+3) The variance is the same within all groups
 
 ```{r, echo=FALSE}
+
 ggplot(blood, aes(x = RBC.Age.Group, y = TimeToRecurrence, fill = RBC.Age.Group)) +
-  geom_boxplot(alpha = 0.7) +
+  geom_boxplot(alpha = 0.7, outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
   theme_minimal() +
-  labs(title = "Boxplot of TimeToRecurrence across RBC.Age.Group Categories",
-       x = "RBC.Age.Group", y = "TimeToRecurrence")
+  labs(
+    title = "Boxplot of Time to Recurrence across RBC Age Groups",
+    x = "RBC Age Group",
+    y = "Time to Recurrence (days)"
+  ) +
+  theme(legend.position = "none")
+
 ```
 This assumption of anova is met. The variance across groups is nearly identical. 
 
 
 ```{r}
-library(tidyverse)
-blood <- read.csv("BloodStorage.csv")
 
-names(blood)
-
-blood$`RBC.Age.Group` <- factor(blood$`RBC.Age.Group`,
-                                levels = c(1, 2, 3),
-                                labels = c("Younger", "Middle", "Older"))
 anova_result <- aov(TimeToRecurrence ~ RBC.Age.Group, data = blood)
 summary(anova_result)
 
+
+```
+Linear regression 
+```{r}
+lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group, data = blood)
+summary(lm_mod)
+
+?predict
+
+pred <- predict(lm_mod)
+res <- residuals(lm_mod)
+
+plot(pred, res)
+plot(pred)
+plot(res)
+
+
+ggplot(lm_mod, aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(
+    title = "Residuals vs Fitted",
+    x = "Fitted Values",
+    y = "Residuals"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(lm_mod, aes(.resid)) +
+  geom_histogram(bins = 10, aes(y = ..density..)) +
+  geom_density(color = "blue") +
+  labs(title = "Histogram of Residuals")
+```
+Running the regression 
+```{r}
+blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
+                              levels = c(1, 2, 3),
+                              labels = c("Younger", "Middle", "Older"))
+lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group, data = blood)
+summary(lm_mod)
+
+unique(blood$RBC.Age.Group)
+table(blood$RBC.Age.Group)
 
 ```
 
