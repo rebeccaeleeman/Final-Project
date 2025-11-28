@@ -28,8 +28,29 @@ ggplot(blood, aes(x = RBC.Age.Group, y = TimeToRecurrence, fill = RBC.Age.Group)
   labs(title = "Boxplot of TimeToRecurrence across RBC.Age.Group Categories",
        x = "RBC.Age.Group", y = "TimeToRecurrence")
 ```
-This assumption of anova is met. The variance across groups is nearly identical. 
+This assumption of anova is met. The variance across groups is nearly identical. (note NA)
 
+```{r}
+library(dbplyr)
+
+blood_younger <- blood |>
+  filter(RBC.Age.Group == "Younger") |>
+  drop_na()
+variance_younger <- var(blood_younger$TimeToRecurrence)
+
+blood_middle <- blood |>
+filter(RBC.Age.Group == "Middle")
+variance_middle <- var(blood_middle$TimeToRecurrence)
+
+blood_older <- blood |>
+filter(RBC.Age.Group == "Older")
+variance_older <- var(blood_older$TimeToRecurrence)
+
+
+
+
+
+```
 
 ```{r}
 library(tidyverse)
