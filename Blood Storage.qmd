@@ -60,12 +60,25 @@ Independence: The independence condition appears to be met, as each observation 
 
 Checking linearity and equal variance
 ```{r}
+
+blood$AA <- factor(blood$AA, labels = c("Non-AA", "AA"))
+blood$FamHx <- factor(blood$FamHx, labels = c("No", "Yes"))
+blood$T.Stage <- factor(blood$T.Stage)
+blood$bGS <- factor(blood$bGS)
+blood$AnyAdjTherapy <- factor(blood$AnyAdjTherapy, labels = c("No", "Yes"))
+blood$AdjRadTherapy <- factor(blood$AdjRadTherapy, labels = c("No", "Yes"))
+
+
+lm_mod_full <- lm(TimeToRecurrence ~ RBC.Age.Group + Age + AA + FamHx + 
+                    PVol + TVol + T.Stage + bGS + PreopPSA + Units + 
+                    AnyAdjTherapy + AdjRadTherapy, data = blood)
+
 lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group, data = blood)
 summary(lm_mod)
 
 
 
-ggplot(lm_mod, aes(x = .fitted, y = .resid)) +
+ggplot(lm_mod_full, aes(x = .fitted, y = .resid)) +
   geom_point() +
   geom_hline(yintercept = 0, linetype = "dashed") +
   labs(
@@ -81,7 +94,7 @@ Checking normality of residuals
 
 
 ```{r}
-ggplot(lm_mod, aes(.resid)) +
+ggplot(lm_mod_full, aes(.resid)) +
   geom_histogram(bins = 10, aes(y = ..density..)) +
   geom_density(color = "blue") +
   labs(title = "Histogram of Residuals")
@@ -91,13 +104,11 @@ Interpretation: Normality is not met, as the plot is right skewed with most resi
 
 Running the regression 
 ```{r}
-# Make sure you have clean data
-blood_clean <- blood %>% drop_na(TimeToRecurrence, RBC.Age.Group, Age)
 
-
-lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group + Age, data = blood_clean)
-
-summary(lm_mod)
+summary(lm_mod_full)
 
 ```
 
+
+```{r}
+summary(lm_mod_full)
