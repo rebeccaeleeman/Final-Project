@@ -108,7 +108,3 @@ Running the regression
 summary(lm_mod_full)
 
 ```
-
-
-```{r}
-summary(lm_mod_full)
