@@ -1,7 +1,7 @@
 ---
 title: "Blood Storage"
 format: pdf
-editor: visual
+authors: "Heidi Linnartz, Aashni Shah, Rebecca Leeman"
 ---
 ## Introduction
 
@@ -37,12 +37,15 @@ This study uses a retrospective observational design, including 316 men who unde
 
 Data is analyzed using R (tidyverse, ggplot2).
 Since the main objective was to evaluate whether RBC storage age predicts time to biochemical recurrence while accounting for potential confounding factors such as age, tumor characteristics, and adjuvant therapy, a multiple linear regression was selected as our analytical approach. This method helps us directly assess the relationship between RBC storage age and recurrence time while simultaneously controlling for other relevant clinical and demographic covariates.
+
 Our model will consist of the covariates age, race (AA vs. Non-AA), family history, prostate and tumor volume, pathological stage, baseline Gleason score (bGS), preoperative PSA, number of RBC units transfused, and adjuvant and radiation therapy status
 The conditions for this are: 
-Independence: Each observation in the Blood Storage dataset represents a unique patient, and there is no evidence that one patient’s data influences another’s. Thus, residuals can reasonably be assumed independent.
-Linearity and Equal Variance: These assumptions are evaluated using a Residuals vs. Fitted plot. Ideally, residuals should appear randomly scattered around zero without a detectable curve (linearity) and with a consistent spread across fitted values (equal variance).
-Normality of Residuals: we will create a histogram of our data’s residuals, hoping for them to have a normal curve. 
 
+Independence: Each observation in the Blood Storage dataset represents a unique patient, and there is no evidence that one patient’s data influences another’s. Thus, residuals can reasonably be assumed independent.
+
+Linearity and Equal Variance: These assumptions are evaluated using a Residuals vs. Fitted plot. Ideally, residuals should appear randomly scattered around zero without a detectable curve (linearity) and with a consistent spread across fitted values (equal variance).
+
+Normality of Residuals: we will create a histogram of our data’s residuals, hoping for them to have a normal curve. 
 
 
 ## Results
@@ -56,11 +59,17 @@ Independence: The independence condition appears to be met, as stated in the met
 Checking linearity and equal variance
 ```{r}
 <<<<<<< HEAD
+<<<<<<< HEAD
 echo=FALSE
 =======
 echo = FALSE
 
 >>>>>>> 4cb3a25adef68f8dd917259c2d30ea6d04a24247
+=======
+#| echo: false
+#| echo: false
+#| message: FALSE
+>>>>>>> f70c126bda4fc7efa3499e5d70cd8e2b21a7190b
 library(tidyverse)
 blood <- read.csv("BloodStorage.csv")
 blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
@@ -89,14 +98,18 @@ ggplot(lm_mod_full, aes(x = .fitted, y = .resid)) +
   theme_minimal()
 ```
 Interpretation: 
+Linearity: To meet the linearity assumption for the linear regression model, the residuals should be symmetric about the y=0 axis. From the plot, this assumption seems reasonably met. 
 
-The residuals do not appear randomly scattered around the zero line. Instead, they show visible structure and changing spread across fitted values, indicating a non-linear relationship between predictors and the outcome. Also, the spread of residuals increases with fitted values, forming a funnel-like pattern that suggests heteroscedasticity (unequal variance of residuals across levels of the fitted values). 
-Neither linearity not equal variance are met.  
+Variance: 
+Also, the spread of residuals increases with fitted values, forming a funnel-like pattern that suggests heteroscedasticity (unequal variance of residuals across levels of the fitted values). 
+
+While linearity is met, equal variance is not  met.  
  
 **Checking normality of residuals**
 
 ```{r}
-echo = FALSE
+#| echo: false
+#| warning: FALSE
 ggplot(lm_mod_full, aes(.resid)) +
   geom_histogram(bins = 10, aes(y = ..density..)) +
   geom_density(color = "blue") +
@@ -110,7 +123,7 @@ Even though the assumptions for linear regression were not met, we can continue 
 
 **Running the regression**
 ```{r}
-echo = FALSE
+#| echo: false
 
 summary(lm_mod_full)
 
