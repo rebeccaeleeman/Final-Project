@@ -3,11 +3,11 @@ title: "Blood Storage"
 format: pdf
 editor: visual
 ---
-Introduction
+## Introduction
 
 The dataset represents data from the study by Cata et al. “Blood Storage Duration and Biochemical Recurrence of Cancer After Radical Prostatectomy”. Mayo Clin Proc 2011; 86(2): 120-127.  
 
-The Research Question and Motivation
+**The Research Question and Motivation**
 
 Prostate cancer is the most common malignant excessive growth of tissue in men. Radical prostatectomy is one of the main therapies for treating localized prostate cancer. A large number of patients require perioperative red blood cell (RBC) transfusions to make up for blood loss occurring during this surgery. However, blood transfusions are often associated with adverse reactions, including infections after surgery and immune disruptions. In cancer patients, these blood transfusions have frequently been a source of concern for reducing long-term survival. However, evidence is currently inconsistent and it is unclear which components of the blood are the source of the cancer-promoting effects. 
 
@@ -17,24 +17,23 @@ This research question is clinically meaningful because cancer recurrence rates 
 
 The goal of this analysis is to evaluate whether the storage duration of transfused allogeneic RBCs is associated with the recurrence of prostate cancer following radical prostatectomy. In particular, we seek to investigate whether patients receiving older blood, defined by the RBC storage duration groups of “younger”, “middle” and “older”, experience earlier biochemical recurrence. We restrict our analysis to recurrence status rather than overall survival. Additionally, we do not attempt causal inference; instead, we seek to evaluate associations within a retrospective observational sample. 
  
-The Data Set and Existing Literature 
+**The Data Set and Existing Literature**
 
 The data used in this analysis came from the study by Cata et al in 2001, “Blood Storage Duration and Biochemical Recurrence of Cancer After Radical Prostatectomy”, published in the Mayo Clinic Proceedings. The cohort included men who had a radical prostatectomy at the Cleveland Clinic and received blood transfusions during the surgery or within 30 days of it. The patients were followed postoperatively and prostate-specific antigen (PSA) measurements were taken to determine if their cancer had recurred. Biochemical recurrence of cancer was defined as a PSA value greater than or equal to 0.4ng/mL followed by a subsequent increase. 
 
 The initial patient pool consisted of 865 patients. Patients who received blood units that spanned multiple storage-age groups were excluded. This left the final dataset with 316 men who received exclusively allogenic (from another person) RBC units. These patients were then grouped into three RBC storage-age groups based on the 33rd and 66th percentiles of blood storage duration distribution: “younger”, “middle” and “older”.
 
-Analytical Scope - variables (responses and predictors) 
+**Analytical Scope - variables (responses and predictors)**
 
 The observational unit was a single patient who underwent radical prostatectomy and received an RBC transfusion. The response variable for this analysis was time to biochemical recurrence, measured in months from the surgery date. The primary predictor is RBC storage age group, a categorical variable with three levels of younger/middle/older. Additionally demographic, surgical, and disease severity variables were available to be used as covariates to adjust for confounding. This framework allows us to assess if RBC storage duration is associated with earlier biochemical recurrence, including while controlling for other patient and disease factors. 
 
 
-
-
-Methodology
+## Methodology
 
 This study uses a retrospective observational design, including 316 men who underwent radical prostatectomy and received allogeneic RBC transfusions, grouped by blood storage duration as “Younger,” “Middle,” or “Older.” Only patients with transfused units entirely within one storage-age category were included to ensure group consistency. 
 
-Statistical Analysis
+**Statistical Analysis**
+
 Data is analyzed using R (tidyverse, ggplot2).
 Since the main objective was to evaluate whether RBC storage age predicts time to biochemical recurrence while accounting for potential confounding factors such as age, tumor characteristics, and adjuvant therapy, a multiple linear regression was selected as our analytical approach. This method helps us directly assess the relationship between RBC storage age and recurrence time while simultaneously controlling for other relevant clinical and demographic covariates.
 Our model will consist of the covariates age, race (AA vs. Non-AA), family history, prostate and tumor volume, pathological stage, baseline Gleason score (bGS), preoperative PSA, number of RBC units transfused, and adjuvant and radiation therapy status
@@ -45,12 +44,11 @@ Normality of Residuals: we will create a histogram of our data’s residuals, ho
 
 
 
-RESULTS
+## Results
 
+**Linear regression** 
 
-###Linear regression 
-
-Conditions: 
+**Conditions:** 
 
 Independence: The independence condition appears to be met, as stated in the methodology.
 
@@ -84,11 +82,11 @@ ggplot(lm_mod_full, aes(x = .fitted, y = .resid)) +
   theme_minimal()
 ```
 Interpretation: 
+
 The residuals do not appear randomly scattered around the zero line. Instead, they show visible structure and changing spread across fitted values, indicating a non-linear relationship between predictors and the outcome. Also, the spread of residuals increases with fitted values, forming a funnel-like pattern that suggests heteroscedasticity (unequal variance of residuals across levels of the fitted values). 
 Neither linearity not equal variance are met.  
  
-Checking normality of residuals 
-
+**Checking normality of residuals**
 
 ```{r}
 ggplot(lm_mod_full, aes(.resid)) +
@@ -102,7 +100,7 @@ Interpretation: Normality is not met, as the plot is right skewed with most resi
 Even though the assumptions for linear regression were not met, we can continue with testing, but inference and significance tests should be interpreted carefully given these unmet assumptions. 
 
 
-Running the regression 
+**Running the regression**
 ```{r}
 
 summary(lm_mod_full)
@@ -112,31 +110,30 @@ The multiple linear regression results show that, after adjusting for demographi
 Among the covariates, higher baseline Gleason scores were strongly associated with shorter recurrence times (p=0.0001), meaning that tumor aggressiveness might be more influential to shorter recurrence times. This is an important point and could require further testing.
 
 
-
-
-
-
-Discussion:
+## Discussion:
 
 Our goal was to answer the question of if storage age of the transfused blood- particularly older blood-  increases the risk of biochemical cancer recurrence after storage. The results from our multiple linear regression model directly address our goal: after adjusting for relevant demographic and clinical covariates, we did not find a significant association between RBC storage age and time to recurrence. This means we do not have sufficient evidence to support that longer blood storage duration contributes to earlier biochemical recurrence in prostate cancer patients. 
+
 These findings align with the results of Cata et al. (2011), who similarly reported no independent association between blood storage age and recurrence risk. In our analysis, even after adjusting for key patient-level factors, such as age, race, tumor volume, adjuvant therapy, and baseline Gleason score, the storage age of transfused blood still showed no meaningful impact on recurrence outcomes.
+
 Surprisingly, the model showed a link between Gleason score (a grading system that shows how abnormal and aggressive prostate cancer cells appear under a microscope) and the speed of recurrence. Patients with higher scores tended to experience recurrence much sooner (p = 0.0001), highlighting the role of tumor aggressiveness in shaping postoperative outcomes. This relationship seems much more influential than variation in transfusion-related factors. For health outcomes, this means we need to strengthen early detection and access to high-quality cancer care especially in low-resource settings and facilities.  
-Methodological limitations
+
+**Methodological limitations**
+
 Using multiple linear regression was a reasonable analytical choice because our outcome- time to recurrence- is continuous and required adjustment for several potential confounders. However, several issues limit the strength of our conclusions. Specifically, model assumptions were not fully met- the residuals displayed non-linearity, unequal variance, and non-normality. These issues limit the validity of p-values and other statistical inferences. The model may not fully capture the underlying patterns in the data. Although ordinary least squares estimates remain unbiased under such conditions, the results should be interpreted more as descriptive trends than as definitive evidence. Additionally, the dataset’s retrospective nature introduces potential biases such as unmeasured confounding or selection effects, which could blur subtle associations transfusion characteristics and recurrence time. Missing data (29 cases removed from the analysis) also reduced statistical power. 
-Recommendations for Improvement
+
+**Recommendations for Improvement**
+
 If we were to do this study again, several methodological enhancements could be made: 
-Incorporate preliminary exploratory analyses or variable-screening techniques- like examining correlations between storage-age groups and clinical covariates, assessing variable distributions, and identifying potential confounders- that could be used to model building more systematically. 
-Time-to-event modeling: A survival analysis, such as the Kaplan-Meier estimator or Cox proportional hazards model, could better account for censoring and directly model recurrence timing as an event process rather than a continuous variable.
-Placing more focus on the relevance of Gleason scores- since we found a relationship between Gleason scores and shorter recurrence times, we could conduct further testing on this aspect. 
+- Incorporate preliminary exploratory analyses or variable-screening techniques- like examining correlations between storage-age groups and clinical covariates, assessing variable distributions, and identifying potential confounders- that could be used to model building more systematically. 
+- Time-to-event modeling: A survival analysis, such as the Kaplan-Meier estimator or Cox proportional hazards model, could better account for censoring and directly model recurrence timing as an event process rather than a continuous variable.
+- Placing more focus on the relevance of Gleason scores- since we found a relationship between Gleason scores and shorter recurrence times, we could conduct further testing on this aspect. 
+
 Ultimately, the lack of association between blood storage duration and recurrence supports the safety and practicality of current blood banking practices in healthcare. This is meaningful for countries where blood shortages are frequent: relying on current storage protocols is efficient and does not compromise patient outcomes. Since we found that tumor aggressiveness does seem to be a driver of recurrence, health systems should improve access to screening and accurate pathology services, as stated earlier. 
 
-References 
+## References 
 
 Atzil, Shir M.A.*; Arad, Michal M.A.*; Glasner, Ariella M.A.*; Abiri, Noa M.A.*; Avraham, Roi M.A.*; Greenfeld, Keren M.A.*; Rosenne, Ella M.A.*; Beilin, Benzion M.D.†; Ben-Eliyahu, Shamgar Ph.D.‡. Blood Transfusion Promotes Cancer Progression: A Critical Role for Aged Erythrocytes. Anesthesiology 109(6):p 989-997, December 1, 2008. | DOI: 10.1097/ALN.0b013e31818ddb72 
+
 Cata, J. P., Klein, E. A., Hoeltge, G. A., Dalton, J. E., Mascha, E., O'Hara, J., Russell, A., Kurz, A., Ben-Elihayhu, S., & Sessler, D. I. (2011). Blood storage duration and biochemical recurrence of cancer after radical prostatectomy. Mayo Clinic proceedings, 86(2), 120–127. https://doi.org/10.4065/mcp.2010.0313
-
-
-
-
-
 
