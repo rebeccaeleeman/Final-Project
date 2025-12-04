@@ -49,15 +49,12 @@ Normality of Residuals: we will create a histogram of our data’s residuals, ho
 
 ## Results
 
-**Linear regression** 
-
-**Conditions:** 
+**Linear regression - Conditions:** 
 
 Independence: The independence condition appears to be met, as stated in the methodology.
 
 Checking linearity and equal variance
 ```{r}
-#| echo: false
 #| echo: false
 #| message: FALSE
 library(tidyverse)
@@ -92,7 +89,6 @@ Linearity: To meet the linearity assumption for the linear regression model, the
 
 Variance: 
 Also, the spread of residuals increases with fitted values, forming a funnel-like pattern that suggests heteroscedasticity (unequal variance of residuals across levels of the fitted values). 
-
 While linearity is met, equal variance is not  met.  
  
 **Checking normality of residuals**
@@ -106,10 +102,7 @@ ggplot(lm_mod_full, aes(.resid)) +
   labs(title = "Histogram of Residuals")
 ```
 Interpretation: Normality is not met, as the plot is right skewed with most residuals clustered near 0 and a longer tail extending to the right. This suggests that the residuals are not normally distributed. 
-
-
 Even though the assumptions for linear regression were not met, we can continue with testing, but inference and significance tests should be interpreted carefully given these unmet assumptions. 
-
 
 **Running the regression**
 ```{r}
@@ -120,7 +113,6 @@ summary(lm_mod_full)
 ```
 The multiple linear regression results show that, after adjusting for demographic, pathological, and clinical covariates, RBC storage age (both “Middle” and “Older” groups) was not significantly associated with Time to Recurrence (p=0.2189 and p=0.9177, respectively). 
 Among the covariates, higher baseline Gleason scores were strongly associated with shorter recurrence times (p=0.0001), meaning that tumor aggressiveness might be more influential to shorter recurrence times. This is an important point and could require further testing.
-
 
 ## Discussion:
 
