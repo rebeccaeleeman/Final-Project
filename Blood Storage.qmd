@@ -54,7 +54,7 @@ Independence: The independence condition appears to be met, as stated in the met
 
 Checking linearity and equal variance
 ```{r}
-echo = FALSE
+#| echo: false
 
 library(tidyverse)
 blood <- read.csv("BloodStorage.csv")
@@ -91,7 +91,7 @@ Neither linearity not equal variance are met.
 **Checking normality of residuals**
 
 ```{r}
-echo = FALSE
+#| echo: false
 ggplot(lm_mod_full, aes(.resid)) +
   geom_histogram(bins = 10, aes(y = ..density..)) +
   geom_density(color = "blue") +
@@ -105,7 +105,7 @@ Even though the assumptions for linear regression were not met, we can continue 
 
 **Running the regression**
 ```{r}
-echo = FALSE
+#| echo: false
 
 summary(lm_mod_full)
 
