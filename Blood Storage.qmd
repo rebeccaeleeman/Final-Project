@@ -98,6 +98,7 @@ While linearity is met, equal variance is not  met.
 
 ```{r}
 #| echo: false
+#| warning: FALSE
 ggplot(lm_mod_full, aes(.resid)) +
   geom_histogram(bins = 10, aes(y = ..density..)) +
   geom_density(color = "blue") +
