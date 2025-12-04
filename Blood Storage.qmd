@@ -129,9 +129,14 @@ Using multiple linear regression was a reasonable analytical choice because our 
 **Recommendations for Improvement**
 
 If we were to do this study again, several methodological enhancements could be made: 
+
 - Incorporate preliminary exploratory analyses or variable-screening techniques- like examining correlations between storage-age groups and clinical covariates, assessing variable distributions, and identifying potential confounders- that could be used to model building more systematically. 
+
 - Time-to-event modeling: A survival analysis, such as the Kaplan-Meier estimator or Cox proportional hazards model, could better account for censoring and directly model recurrence timing as an event process rather than a continuous variable.
+
 - Placing more focus on the relevance of Gleason scores- since we found a relationship between Gleason scores and shorter recurrence times, we could conduct further testing on this aspect. 
+
+-Run a linear regression using the Middle group as the reference to directly compare Middle and Older storage-age groups, instead of just Middle to the Younger group and Older to Younger comparison. 
 
 Ultimately, the lack of association between blood storage duration and recurrence supports the safety and practicality of current blood banking practices in healthcare. This is meaningful for countries where blood shortages are frequent: relying on current storage protocols is efficient and does not compromise patient outcomes. Since we found that tumor aggressiveness does seem to be a driver of recurrence, health systems should improve access to screening and accurate pathology services, as stated earlier. 
 
