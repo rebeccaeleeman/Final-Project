@@ -32,6 +32,7 @@ The observational unit was a single patient who underwent radical prostatectomy 
 
 This study uses a retrospective observational design, including 316 men who underwent radical prostatectomy and received allogeneic RBC transfusions, grouped by blood storage duration as “Younger,” “Middle,” or “Older.” Only patients with transfused units entirely within one storage-age category were included to ensure group consistency. 
 
+
 **Statistical Analysis**
 
 Data is analyzed using R (tidyverse, ggplot2).
@@ -54,6 +55,7 @@ Independence: The independence condition appears to be met, as stated in the met
 
 Checking linearity and equal variance
 ```{r}
+echo=FALSE
 library(tidyverse)
 blood <- read.csv("BloodStorage.csv")
 blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
