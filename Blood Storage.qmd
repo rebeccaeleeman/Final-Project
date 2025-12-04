@@ -131,6 +131,7 @@ If we were to do this study again, several methodological enhancements could be 
 
 Ultimately, the lack of association between blood storage duration and recurrence supports the safety and practicality of current blood banking practices in healthcare. This is meaningful for countries where blood shortages are frequent: relying on current storage protocols is efficient and does not compromise patient outcomes. Since we found that tumor aggressiveness does seem to be a driver of recurrence, health systems should improve access to screening and accurate pathology services, as stated earlier. 
 
+
 ## References 
 
 Atzil, Shir M.A.*; Arad, Michal M.A.*; Glasner, Ariella M.A.*; Abiri, Noa M.A.*; Avraham, Roi M.A.*; Greenfeld, Keren M.A.*; Rosenne, Ella M.A.*; Beilin, Benzion M.D.†; Ben-Eliyahu, Shamgar Ph.D.‡. Blood Transfusion Promotes Cancer Progression: A Critical Role for Aged Erythrocytes. Anesthesiology 109(6):p 989-997, December 1, 2008. | DOI: 10.1097/ALN.0b013e31818ddb72 
