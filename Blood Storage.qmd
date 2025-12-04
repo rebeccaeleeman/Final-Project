@@ -55,7 +55,12 @@ Independence: The independence condition appears to be met, as stated in the met
 
 Checking linearity and equal variance
 ```{r}
+<<<<<<< HEAD
 echo=FALSE
+=======
+echo = FALSE
+
+>>>>>>> 4cb3a25adef68f8dd917259c2d30ea6d04a24247
 library(tidyverse)
 blood <- read.csv("BloodStorage.csv")
 blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
@@ -91,6 +96,7 @@ Neither linearity not equal variance are met.
 **Checking normality of residuals**
 
 ```{r}
+echo = FALSE
 ggplot(lm_mod_full, aes(.resid)) +
   geom_histogram(bins = 10, aes(y = ..density..)) +
   geom_density(color = "blue") +
@@ -104,6 +110,7 @@ Even though the assumptions for linear regression were not met, we can continue 
 
 **Running the regression**
 ```{r}
+echo = FALSE
 
 summary(lm_mod_full)
 
