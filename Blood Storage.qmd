@@ -4,83 +4,6 @@ format: pdf
 editor: visual
 ---
 
-### One way anova test 
-
-Assumptions 
-1) Independence: Met, as stated in methodology 
-
-2) Outcomes within groups are normally distributed 
-```{r}
-
-library(tidyverse)
-blood <- read.csv("BloodStorage.csv")
-
-library(ggplot2)
-ggplot(data = blood, aes(x = TimeToRecurrence)) +
-  geom_histogram(bins = 10) +
-  facet_grid(~ RBC.Age.Group)
-
-# Recode the numeric group variable into labeled factors
-blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
-                              levels = c(1, 2, 3),
-                              labels = c("Younger", "Middle", "Older"))
-```
-This assumption is not met. Outcomes between groups of Blood Age (Younger, Middle, Older) are not normally distributed. Rather, they are right skewed in each group.  
-
-3) The variance is the same within all groups
-
-```{r, echo=FALSE}
-
-ggplot(blood, aes(x = RBC.Age.Group, y = TimeToRecurrence, fill = RBC.Age.Group)) +
-  geom_boxplot(alpha = 0.7, outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
-  theme_minimal() +
-  labs(
-    title = "Boxplot of Time to Recurrence across RBC Age Groups",
-    x = "RBC Age Group",
-    y = "Time to Recurrence (days)"
-  ) +
-  theme(legend.position = "none")
-
-```
-This assumption of anova seems to be met, as the interquartile range across groups appears to be nearly identical. But, we will test this by calculating specific variance values: 
-
-```{r}
-library(dbplyr)
-
-blood_younger <- blood |>
-  filter(RBC.Age.Group == "Younger") |>
-  drop_na()
-variance_younger <- var(blood_younger$TimeToRecurrence)
-
-blood_middle <- blood |>
-filter(RBC.Age.Group == "Middle")
-variance_middle <- var(blood_middle$TimeToRecurrence)
-
-blood_older <- blood |>
-filter(RBC.Age.Group == "Older")
-variance_older <- var(blood_older$TimeToRecurrence)
-
-```
-
-Variance_younger: 880.64
-Variance_middle: 780.0196
-Variance_older: 812.29
-
-These number appear generally similar in value, so we can confidently say that the equal variance assumption has been met. 
-
-Even though the normality assumption was not met, the ANOVA is generally robust to moderate deviations from normality, so the analysis can still be interpreted with caution while noting this limitation. 
-
-Conducting the ANOVA: 
-```{r}
-
-anova_result <- aov(TimeToRecurrence ~ RBC.Age.Group, data = blood)
-summary(anova_result)
-
-
-```
-Because the p-value (0.625) is much larger than 0.05, we fail to reject the null hypothesis. This indicates that there is no statistically significant difference in mean Time to Recurrence among the three RBC storage-age groups. 
-
-
 ###Linear regression 
 
 Conditions: 
@@ -89,7 +12,11 @@ Independence: The independence condition appears to be met, as stated in the met
 
 Checking linearity and equal variance
 ```{r}
-
+library(tidyverse)
+blood <- read.csv("BloodStorage.csv")
+blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
+                              levels = c(1, 2, 3),
+                              labels = c("Younger", "Middle", "Older"))
 blood$AA <- factor(blood$AA, labels = c("Non-AA", "AA"))
 blood$FamHx <- factor(blood$FamHx, labels = c("No", "Yes"))
 blood$T.Stage <- factor(blood$T.Stage)
