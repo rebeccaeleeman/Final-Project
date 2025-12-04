@@ -58,7 +58,8 @@ Independence: The independence condition appears to be met, as stated in the met
 Checking linearity and equal variance
 ```{r}
 #| echo: false
-
+#| echo: false
+#| message: FALSE
 library(tidyverse)
 blood <- read.csv("BloodStorage.csv")
 blood$RBC.Age.Group <- factor(blood$RBC.Age.Group,
