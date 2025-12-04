@@ -4,14 +4,14 @@ format: pdf
 editor: visual
 ---
 
-One way anova test 
-Assumptions 
-1) The samples are independent. 
+### One way anova test 
 
-This assumption is reasonably met by the nature of the data. Each sample represents and independent individual patient. Any condtions for one patient would not impact the conditions of another patient. 
+Assumptions 
+1) Independence: Met, as stated in methodology 
 
 2) Outcomes within groups are normally distributed 
 ```{r}
+
 library(tidyverse)
 blood <- read.csv("BloodStorage.csv")
 
@@ -42,7 +42,7 @@ ggplot(blood, aes(x = RBC.Age.Group, y = TimeToRecurrence, fill = RBC.Age.Group)
   theme(legend.position = "none")
 
 ```
-This assumption of anova is met. The variance across groups is nearly identical. (note NA)
+This assumption of anova seems to be met, as the interquartile range across groups appears to be nearly identical. But, we will test this by calculating specific variance values: 
 
 ```{r}
 library(dbplyr)
@@ -60,12 +60,17 @@ blood_older <- blood |>
 filter(RBC.Age.Group == "Older")
 variance_older <- var(blood_older$TimeToRecurrence)
 
-
-
-
-
 ```
 
+Variance_younger: 880.64
+Variance_middle: 780.0196
+Variance_older: 812.29
+
+These number appear generally similar in value, so we can confidently say that the equal variance assumption has been met. 
+
+Even though the normality assumption was not met, the ANOVA is generally robust to moderate deviations from normality, so the analysis can still be interpreted with caution while noting this limitation. 
+
+Conducting the ANOVA: 
 ```{r}
 
 anova_result <- aov(TimeToRecurrence ~ RBC.Age.Group, data = blood)
@@ -73,11 +78,14 @@ summary(anova_result)
 
 
 ```
-Linear regression 
+Because the p-value (0.625) is much larger than 0.05, we fail to reject the null hypothesis. This indicates that there is no statistically significant difference in mean Time to Recurrence among the three RBC storage-age groups. 
+
+
+###Linear regression 
 
 Conditions: 
 
-Independence: The independence condition appears to be met, as each observation in the Blood Storage dataset represents a separate patient, and there’s no indication that the measurements influence one another. Therefore, the residuals can reasonably be assumed to be independent.
+Independence: The independence condition appears to be met, as stated in the methodology.
 
 Checking linearity and equal variance
 ```{r}
@@ -94,11 +102,6 @@ lm_mod_full <- lm(TimeToRecurrence ~ RBC.Age.Group + Age + AA + FamHx +
                     PVol + TVol + T.Stage + bGS + PreopPSA + Units + 
                     AnyAdjTherapy + AdjRadTherapy, data = blood)
 
-lm_mod <- lm(TimeToRecurrence ~ RBC.Age.Group, data = blood)
-summary(lm_mod)
-
-
-
 ggplot(lm_mod_full, aes(x = .fitted, y = .resid)) +
   geom_point() +
   geom_hline(yintercept = 0, linetype = "dashed") +
@@ -109,8 +112,10 @@ ggplot(lm_mod_full, aes(x = .fitted, y = .resid)) +
   ) +
   theme_minimal()
 ```
-Interpretation: INSERT SMTH HERE
-
+Interpretation: 
+The residuals do not appear randomly scattered around the zero line. Instead, they show visible structure and changing spread across fitted values, indicating a non-linear relationship between predictors and the outcome. Also, the spread of residuals increases with fitted values, forming a funnel-like pattern that suggests heteroscedasticity (unequal variance of residuals across levels of the fitted values). 
+Neither linearity not equal variance are met.  
+ 
 Checking normality of residuals 
 
 
@@ -121,6 +126,9 @@ ggplot(lm_mod_full, aes(.resid)) +
   labs(title = "Histogram of Residuals")
 ```
 Interpretation: Normality is not met, as the plot is right skewed with most residuals clustered near 0 and a longer tail extending to the right. This suggests that the residuals are not normally distributed. 
+
+
+Even though the assumptions for linear regression were not met, we can continue with testing, but inference and significance tests should be interpreted carefully given these unmet assumptions. 
 
 
 Running the regression 
