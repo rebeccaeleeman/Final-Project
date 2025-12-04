@@ -137,3 +137,5 @@ Running the regression
 summary(lm_mod_full)
 
 ```
+The multiple linear regression results show that, after adjusting for demographic, pathological, and clinical covariates, RBC storage age (both “Middle” and “Older” groups) was not significantly associated with Time to Recurrence (p=0.2189 and p=0.9177, respectively). 
+Among the covariates, higher baseline Gleason scores were strongly associated with shorter recurrence times (p=0.0001), meaning that tumor aggressiveness might be more influential to shorter recurrence times. This is an important point and could require further testing. 
